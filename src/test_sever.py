@@ -12,3 +12,12 @@ def test_get_products(client):
     payload = response.get_json()
     assert type(payload) is list
     assert len(payload) > 0
+
+def test_create_product(client):
+    mock_data = {"name": "Microwave", "price": 200}
+    response = client.post('/products', json=mock_data)
+    assert response.status_code == 201
+    data = response.get_json()
+    assert "id" in data
+    assert data["name"] == mock_data["name"]
+    assert data["price"] == mock_data["price"]
