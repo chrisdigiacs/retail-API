@@ -1,2 +1,2 @@
-## Lightspeed practical test
+# Lightspeed practical test
 By: Christopher Di Giacomo
