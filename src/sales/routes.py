@@ -1,4 +1,4 @@
-from flask import Flask, request, Blueprint, jsonify
+from flask import request, Blueprint, jsonify
 from .service import process_sale
 
 sales_bp = Blueprint("sales", __name__, url_prefix="/sales")

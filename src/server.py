@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask
 from dotenv import load_dotenv
 import os
 from db import init_db
@@ -17,10 +17,6 @@ init_db(app) # Initialize the db to be populated with default data
 
 app.register_blueprint(products_bp) # Register the products blueprint with the application
 app.register_blueprint(sales_bp) # Register the sales blueprint with the application
-
-@app.get("/")
-def index():
-    return jsonify({"message": "Hello World!"}), 200
 
 if __name__ == "__main__":
     app.run()
