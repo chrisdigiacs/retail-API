@@ -11,20 +11,20 @@ def client():
 # Integration test for GET /products endpoint
 def test_get_products(client):
     response = client.get('/products')
-    assert response.status_code == 200
+    assert response.status_code == 200 # Assuring response code is HTTP 200
     payload = response.get_json()
-    assert type(payload) is list
-    assert len(payload) > 0
+    assert type(payload) is list # Assuring the payload type is a list
+    assert len(payload) > 0 # Assuring non-empty payload
 
 # Integration test for POST /products endpoint
 def test_create_product(client):
-    mock_data = {"name": "Microwave", "price": 200}
+    mock_data = {"name": "Microwave", "price": 200} # Preparing mock request data
     response = client.post('/products', json=mock_data)
-    assert response.status_code == 201
-    data = response.get_json()
-    assert "id" in data
-    assert data["name"] == mock_data["name"]
-    assert data["price"] == mock_data["price"]
+    assert response.status_code == 201 # Assuring response code is HTTP 201
+    data = response.get_json() 
+    assert "id" in data # Assuring response payload contains id field
+    assert data["name"] == mock_data["name"] # Assuring that the returned product's name matches that of the mock
+    assert data["price"] == mock_data["price"] # Assuring that the returned product's price matches that of the mock
 
 # Integration test for POST /sales endpoint
 def test_make_sale(client):
