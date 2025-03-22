@@ -46,8 +46,8 @@ def create_product(data: dict) -> dict:
         db.session.add(new_product)
         db.session.commit()
         return {"id": new_product.id, "name": new_product.name, "price": new_product.price}
-    except ValueError as e:
-        return ({"error":str(e)}), 400
+    except (ValueError, TypeError) as e:
+        return {"error":str(e)}, 400
 
 def validate_post_request(data: dict):
     """
@@ -57,17 +57,20 @@ def validate_post_request(data: dict):
     Additionally, it checks that the 'name' is a string and the 'price' is either an int or a float.
     
     Raises:
-        ValueError: If the data is empty, missing required keys, or if the values are of incorrect types.
+        ValueError: If the data is empty, missing required keys, or invalid.
                    - Missing keys: "Request must include name and price."
+                   - Invalid value: "'price' must be > 0."
+        TypeError: If the data values are not of the correct data types.
                    - Incorrect type for 'name': "'name' must be of type string."
                    - Incorrect type for 'price': "'price' must be of type float or int."
-    
     Args:
         data (dict): The input dictionary to be validated.
     """
     if not data or not ({'name', 'price'} <= data.keys()):
         raise ValueError('Request must include name and price.')
     if type(data['name']) is not str:
-        raise ValueError("'name' must be of type string.")
+        raise TypeError("'name' must be of type string.")
     if type(data['price']) not in [float, int]:
-        raise ValueError("'price' must be of type float or int.")
+        raise TypeError("'price' must be of type float or int.")
+    if data["price"] <= 0:
+        raise ValueError("'price' must be > 0.")
