@@ -1,12 +1,21 @@
 import pytest
-from server import app
+from src.server import AppFactory
+import os
+
+@pytest.fixture
+def app():
+    basedir = os.path.abspath(os.path.dirname(__file__)) # Store absolute path to current directory
+    test_app = AppFactory(basedir)
+    return test_app
 
 # Pytest fixture to create and yield a test client
 # This client simulates HTTP requests during tests.
 @pytest.fixture
-def client():
-    with app.test_client() as client:
+def client(app):
+    with app.app.test_client() as client:
         yield client
+        app.db.session.remove()
+        app.db.drop_all()
 
 # Integration test for GET /products endpoint
 def test_get_products(client):
@@ -15,6 +24,7 @@ def test_get_products(client):
     payload = response.get_json()
     assert type(payload) is list # Assuring the payload type is a list
     assert len(payload) > 0 # Assuring non-empty payload
+    assert all("id" in p and "name" in p and "price" in p for p in payload) # Assuring each product has id, name, and price fields
 
 # Integration test for POST /products endpoint
 def test_create_product(client):
