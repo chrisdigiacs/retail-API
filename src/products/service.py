@@ -138,9 +138,9 @@ class ProductService:
             raise TypeError("'name' must be of type string.")
         if data["name"] == "":
             raise ValueError("'name' must not be empty.")
-        if type(data['price']) is not float:
+        if type(data['price']) not in [float, int]:
             raise TypeError("'price' must be of type float or int.")
         if data["price"] <= 0:
             raise ValueError("'price' must be > 0.")
-        if len(str(data["price"]).split(".")[1]) > 2:
+        if type(data['price']) is float and len(str(data["price"]).split(".")[1]) > 2:
             raise ValueError("'price' must have at most 2 decimal places.")
