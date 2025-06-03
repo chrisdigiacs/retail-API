@@ -1,4 +1,4 @@
-# Lightspeed practical test
+# Retail-API
 By: Christopher Di Giacomo
 
 ## Environment Setup
